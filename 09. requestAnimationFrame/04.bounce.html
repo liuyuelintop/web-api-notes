@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bounce Animation</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: #fac;
+        position: absolute;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <script>
+      const box = document.querySelector(".box");
+
+      function animate(from, to, duration, callback) {
+        const start = performance.now();
+        const bounceEaseOut = (t) => {
+          const n1 = 7.5625,
+            d1 = 2.75;
+          if (t < 1 / d1) {
+            return n1 * t * t;
+          } else if (t < 2 / d1) {
+            return n1 * (t -= 1.5 / d1) * t + 0.75;
+          } else if (t < 2.5 / d1) {
+            return n1 * (t -= 2.25 / d1) * t + 0.9375;
+          } else {
+            return n1 * (t -= 2.625 / d1) * t + 0.984375;
+          }
+        };
+
+        function _run(now) {
+          const elapsed = now - start;
+          if (elapsed >= duration) {
+            callback(to);
+            cancelAnimationFrame(rid);
+            return;
+          }
+
+          const t = elapsed / duration;
+          const value = from + (to - from) * bounceEaseOut(t);
+          callback(value);
+          rid = requestAnimationFrame(_run);
+        }
+        let rid = requestAnimationFrame(_run);
+      }
+
+      animate(0, 300, 2000, function (val) {
+        box.style.top = val + "px";
+      });
+    </script>
+  </body>
+</html>

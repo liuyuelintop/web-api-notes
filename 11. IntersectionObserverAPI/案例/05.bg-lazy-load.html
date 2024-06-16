@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Background Lazy Load</title>
+    <style>
+      .lazy-bg {
+        height: 300px;
+        background: lightgrey;
+        margin: 10px;
+      }
+      .lazy-bg[data-bg] {
+        background-image: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="lazy-bg" data-bg="https://picsum.photos/800/600?r=1">
+      Lazy Load Background
+    </div>
+    <!-- More elements... -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target;
+              el.style.backgroundImage = `url(${el.dataset.bg})`;
+              observer.unobserve(el);
+            }
+          });
+        });
+
+        document
+          .querySelectorAll(".lazy-bg[data-bg]")
+          .forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // indexedDB
+      //   1. 链接数据库
+      const request = window.indexedDB.open("test", 1);
+      request.onupgradeneeded = function (e) {
+        console.log("indexedDB initialize / upgrade");
+        const db = e.target.result;
+        // 创建数据存储对象
+        const store = db.createObjectStore("user");
+        store.add({ name: "John", age: 30 }, "User1");
+      };
+      request.onsuccess = function (e) {
+        console.log("indexedDB connected successfully");
+        const db = e.target.result;
+        const transaction = db.transaction(["user"], "readwrite");
+        const store = transaction.objectStore("user");
+        // 增加数据
+        // store.add({ name: "John", age: 30 }, "User2");
+        // store.add({ name: "John", age: 30 }, "User3");
+        // store.add({ name: "John", age: 30 }, "User4");
+        // store.add({ name: "John", age: 30 }, "User5");
+        // 删除数据
+        // store.delete("User1");
+        // 修改数据
+        // store.put({ name: "Tom", age: 60 }, 'User6');
+        // 查找数据
+        const r = store.getAll();
+        r.onsuccess = function (e) {
+          console.log(e.target.result);
+        };
+      };
+      request.onerror = function (e) {
+        console.log("indexedDB connection error");
+        console.log(e.target.error);
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/bs.css" />
+    <style>
+      .table img {
+        width: 15rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="margin-left: 100px">
+      <div class="col-md-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" />
+      </div>
+      <div class="col-md-3">
+        <label for="avatar" class="form-label">Avatar</label>
+        <input type="file" class="form-control" id="avatar" />
+        <!-- <img src="../02. FileAPI/assets/link.jpg" class="img-thumbnail" /> -->
+      </div>
+      <button type="button" class="btn btn-primary add-user">Add User</button>
+      <button type="button" class="btn btn-success get-user">
+        Get all user
+      </button>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Avatar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr>
+            <td>Mark</td>
+            <td>
+              <img src="" alt="" />
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+    <script src="demo.js"></script>
+  </body>
+</html>

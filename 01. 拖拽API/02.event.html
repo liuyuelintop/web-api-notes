@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+      }
+      .drop-content {
+        width: 200px;
+        height: 200px;
+        border: 2px dashed #000;
+      }
+      .drag-box {
+        background-color: red;
+        color: #fff;
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="drop-content">拖放区域</div>
+    <div class="drag-box" draggable="true">拖拽元素</div>
+    <input type="text" />
+    <script>
+      const dropContent = document.querySelector(".drop-content");
+      const dragBox = document.querySelector(".drag-box");
+
+      dragBox.addEventListener("dragstart", () => console.log("Drag started"));
+      dragBox.addEventListener("dragend", () => console.log("Drag ended"));
+
+      dropContent.addEventListener("dragenter", () =>
+        console.log("Drag entered drop area")
+      );
+      dropContent.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        console.log("Dragging over drop area");
+      });
+      dropContent.addEventListener("dragleave", () =>
+        console.log("Drag left drop area")
+      );
+      dropContent.addEventListener("drop", (e) => {
+        e.preventDefault();
+        console.log("Dropped in drop area");
+      });
+    </script>
+  </body>
+</html>

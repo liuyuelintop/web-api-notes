@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Drop Sorting</title>
+    <style>
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      li {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 5px;
+        background-color: #f9f9f9;
+        cursor: grab;
+      }
+
+      li.dragging {
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="sortableList">
+      <li draggable="true">Item 1</li>
+      <li draggable="true">Item 2</li>
+      <li draggable="true">Item 3</li>
+      <li draggable="true">Item 4</li>
+      <li draggable="true">Item 5</li>
+    </ul>
+
+    <script>
+      // 获取要进行排序的列表元素
+      const sortableList = document.getElementById("sortableList");
+      let draggingElement = null; // 用于存储当前被拖动的元素
+
+      // 当拖动开始时触发此事件
+      sortableList.addEventListener("dragstart", function (e) {
+        e.target.classList.add("dragging"); // 添加一个类以表示正在拖动
+        draggingElement = e.target; // 将拖动的元素存储起来
+      });
+
+      // 当拖动元素在目标元素上方时触发此事件
+      sortableList.addEventListener("dragover", function (e) {
+        e.preventDefault(); // 阻止默认行为，允许我们自定义放置行为
+        e.dataTransfer.dropEffect = "move"; // 设置拖放操作的效果为“移动”
+
+        // 确保当前目标不是正在拖动的元素，并且目标元素是一个LI标签
+        if (e.target !== draggingElement && e.target.tagName === "LI") {
+          // 获取目标元素的大小和位置
+          const targetMsg = e.target.getBoundingClientRect();
+          // 计算鼠标在目标元素内部的相对位置
+          const mouseY = e.clientY - targetMsg.top;
+          const targetHeight = targetMsg.height;
+
+          // 判断鼠标位置以决定插入位置
+          if (mouseY < targetHeight / 2) {
+            // 如果鼠标在目标元素的上半部分，将拖动元素插入到目标元素之前
+            sortableList.insertBefore(draggingElement, e.target);
+          } else {
+            // 如果鼠标在目标元素的下半部分，将拖动元素插入到目标元素之后
+            sortableList.insertBefore(draggingElement, e.target.nextSibling);
+          }
+        }
+      });
+
+      // 当拖动结束时触发此事件
+      sortableList.addEventListener("dragend", function (e) {
+        e.target.classList.remove("dragging"); // 移除表示正在拖动的类
+        draggingElement = null; // 清空拖动元素的存储
+      });
+    </script>
+  </body>
+</html>

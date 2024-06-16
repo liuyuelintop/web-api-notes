@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fade In Effect</title>
+    <style>
+      .fade-in {
+        opacity: 0;
+        transition: opacity 1s;
+      }
+      .fade-in.visible {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="fade-in"
+      style="height: 200px; background: lightcoral; margin: 10px"
+    >
+      Fade In Element
+    </div>
+    <!-- More elements... -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        });
+
+        document
+          .querySelectorAll(".fade-in")
+          .forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

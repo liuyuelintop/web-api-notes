@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Infinite Scroll</title>
+    <style>
+      .item {
+        height: 200px;
+        background: lightgrey;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div class="item">Item 1</div>
+      <!-- More items... -->
+    </div>
+    <div id="load-more" class="item">Loading...</div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const loadMore = document.getElementById("load-more");
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Simulate an API call to load more content
+              setTimeout(() => {
+                for (let i = 0; i < 5; i++) {
+                  const newItem = document.createElement("div");
+                  newItem.classList.add("item");
+                  newItem.textContent = `New Item ${Date.now()}`;
+                  document.getElementById("content").appendChild(newItem);
+                }
+              }, 1000);
+            }
+          });
+        });
+
+        observer.observe(loadMore);
+      });
+    </script>
+  </body>
+</html>

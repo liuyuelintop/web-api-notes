@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Count Up Animation</title>
+    <style>
+      .count-up {
+        font-size: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="count-up" data-target="1000">0</div>
+    <!-- More count-up elements... -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target;
+              const target = +el.dataset.target;
+              const duration = 2000;
+              let start = 0;
+              const increment = target / (duration / 16);
+
+              const updateCount = () => {
+                start += increment;
+                el.textContent = Math.ceil(start);
+                if (start < target) {
+                  requestAnimationFrame(updateCount);
+                } else {
+                  el.textContent = target;
+                  observer.unobserve(el);
+                }
+              };
+
+              updateCount();
+            }
+          });
+        });
+
+        document
+          .querySelectorAll(".count-up")
+          .forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

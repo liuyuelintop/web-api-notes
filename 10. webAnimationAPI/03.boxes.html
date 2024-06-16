@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation Examples</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: #fac;
+        position: absolute;
+      }
+      .box1 {
+        top: 10px;
+        left: 10px;
+      }
+      .box2 {
+        top: 120px;
+        left: 10px;
+      }
+      .box3 {
+        top: 230px;
+        left: 10px;
+      }
+      .box4 {
+        top: 340px;
+        left: 10px;
+      }
+      .box5 {
+        top: 450px;
+        left: 10px;
+        opacity: 0;
+      }
+      .box6 {
+        top: 560px;
+        left: 10px;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box box1"></div>
+    <div class="box box2"></div>
+    <div class="box box3"></div>
+    <div class="box box4"></div>
+    <div class="box box5"></div>
+    <div class="box box6"></div>
+    <script>
+      // Include the animate function and easing functions here
+      // Generic animation function
+      function animate({ from, to, duration, callback, easing = linear }) {
+        const start = performance.now();
+
+        function _run(now) {
+          const elapsed = now - start;
+          if (elapsed >= duration) {
+            callback(to);
+            cancelAnimationFrame(rid);
+            return;
+          }
+
+          const t = elapsed / duration;
+          const value = from + (to - from) * easing(t);
+          callback(value);
+          rid = requestAnimationFrame(_run);
+        }
+        let rid = requestAnimationFrame(_run);
+      }
+
+      // Linear easing function (default)
+      function linear(t) {
+        return t;
+      }
+
+      // Bounce easing function
+      function bounceEaseOut(t) {
+        const n1 = 7.5625,
+          d1 = 2.75;
+        if (t < 1 / d1) {
+          return n1 * t * t;
+        } else if (t < 2 / d1) {
+          return n1 * (t -= 1.5 / d1) * t + 0.75;
+        } else if (t < 2.5 / d1) {
+          return n1 * (t -= 2.25 / d1) * t + 0.9375;
+        } else {
+          return n1 * (t -= 2.625 / d1) * t + 0.984375;
+        }
+      }
+
+      // Example animations
+      const box1 = document.querySelector(".box1");
+      animate({
+        from: 0,
+        to: 300,
+        duration: 2000,
+        callback: (val) => {
+          box1.style.left = val + "px";
+          box1.style.transform = `rotate(${val}deg)`;
+        },
+        easing: linear,
+      });
+
+      const box2 = document.querySelector(".box2");
+      function colorTransition(t) {
+        const r = Math.floor(255 * (1 - t));
+        const g = Math.floor(255 * t);
+        const b = 150;
+        return `rgb(${r},${g},${b})`;
+      }
+      animate({
+        from: 0,
+        to: 1,
+        duration: 2000,
+        callback: (val) => {
+          box2.style.backgroundColor = colorTransition(val);
+        },
+        easing: linear,
+      });
+
+      const box3 = document.querySelector(".box3");
+      animate({
+        from: 1,
+        to: 2,
+        duration: 1500,
+        callback: (val) => {
+          box3.style.transform = `scale(${val})`;
+        },
+        easing: bounceEaseOut,
+      });
+
+      const box4 = document.querySelector(".box4");
+      animate({
+        from: 0,
+        to: 200,
+        duration: 1000,
+        callback: (val) => {
+          box4.style.top = val + "px";
+        },
+        easing: bounceEaseOut,
+      });
+
+      const box5 = document.querySelector(".box5");
+      animate({
+        from: 0,
+        to: 1,
+        duration: 3000,
+        callback: (val) => {
+          box5.style.opacity = val;
+        },
+        easing: linear,
+      });
+
+      const box6 = document.querySelector(".box6");
+      animate({
+        from: 0,
+        to: 300,
+        duration: 2500,
+        callback: (val) => {
+          box6.style.left = val + "px";
+          box6.style.opacity = val / 300;
+        },
+        easing: linear,
+      });
+    </script>
+  </body>
+</html>
